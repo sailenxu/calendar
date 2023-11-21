@@ -8,8 +8,16 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.8",
+    "@fullcalendar/daygrid": "^6.1.8",
+    "@fullcalendar/interaction": "^6.1.8",
+    "@fullcalendar/vue": "^6.1.8",
+    "axios": "^1.5.0",
     "core-js": "^3.8.3",
-    "vue": "^2.6.14"
+    "element-ui": "^2.15.14",
+    "moment": "^2.29.4",
+    "vue": "^2.6.14",
+    "vue-minder-editor-plus": "^1.1.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -19,6 +27,8 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "node-sass": "^9.0.0",
+    "sass-loader": "^13.3.2",
     "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {

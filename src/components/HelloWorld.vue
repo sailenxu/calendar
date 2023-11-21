@@ -1,58 +1,112 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div>
+    <el-container>
+      <el-aside width="150px">
+        <div class="leftAside" style="padding-top: 20px">
+          <el-select v-model="value" placeholder="选择分组">
+            <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
+            </el-option>
+          </el-select>
+          <div style="text-align: center; padding-top: 10px">
+            <el-button size="mini">添加分组</el-button>
+            <el-button size="mini">添加成员</el-button>
+          </div>
+          <div class="elTagName">
+            <el-tag style="color: white; background-color: #FF7F00;" type="success">张三</el-tag>
+          </div>
+          <div class="elTagName">
+            <el-tag style="color: white; background-color: #238E68;" type="info">李四</el-tag>
+          </div>
+          <div class="elTagName">
+            <el-tag style="color: white; background-color: #BC8F8F;" type="warning">王五</el-tag>
+          </div>
+        </div>
+      </el-aside>
+      <el-main>
+        <FullCalendar ref="calendar" :options="calendarOptions"/>
+      </el-main>
+      <el-dialog
+        title="日程"
+        :visible.sync="dialogVisible"
+        >
+        <span>abc</span>
+      </el-dialog>
+    </el-container>
   </div>
 </template>
 
 <script>
+import FullCalendar from '@fullcalendar/vue';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import axios from "axios";
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  components: {
+    FullCalendar
+  },
+  data() {
+    return {
+      risk: 'case：\\n1.三方支付0 + 「余额」支付覆盖车费走普通支付的push\\n2.「先乘后付」三方支付全部走先乘后付的push\\n3.以「先乘后付」三方支付部分 + 部分「余额」支付\\t走先乘后付的push\\n包含微信和支付宝先乘后付',
+      dialogVisible: false,
+      options: [],
+      value: '',
+      calendarOptions: {
+        plugins: [dayGridPlugin, interactionPlugin],// 选择要使用的插件，例如 dayGrid，可以根据需要添加其他插件
+        // height: 600,
+        contentHeight: 'auto',
+        editable: false,
+        selectable: true,
+        selectMirror: true,
+        dayMaxEvents: false,
+        weekends: true,
+        eventClick: this.handleEventClick,
+        select: this.handleDateSelect,
+        events: [],
+        // 其他 FullCalendar 配置选项...
+      }
+    };
+  },
+  methods: {
+    handleDateSelect() {
+      console.info('aaa');
+      this.dialogVisible = true;
+    },
+    handleEventClick(event) {
+      console.info('bbb' + event.event.title);
+      this.dialogVisible = true;
+    }
+  },
+  mounted() {
+    axios.get('https://localhost:8080/getGroupList').then(res => {
+      this.options = res.data.data;
+    });
+    axios.get('https://localhost:8080/getEventByGroup').then(res => {
+      this.calendarOptions.events = res.data.data.eventList;
+    })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style>
+.fc-daygrid-day-top {
+  height: 23px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.leftAside {
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+.elTagName {
+  padding-top: 10px;
+  text-align: center;
 }
 </style>
