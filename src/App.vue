@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <UploadAtt/>
+    <hello-world/>
   </div>
 </template>
 
 <script>
-import UploadAtt from './components/UploadAtt.vue'
+import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: 'App',
   components: {
-    UploadAtt
+    HelloWorld
   }
 }
 </script>
