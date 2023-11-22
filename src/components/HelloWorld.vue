@@ -21,9 +21,6 @@
           <div class="elTagName">
             <el-tag style="color: white; background-color: #238E68;" type="info">李四</el-tag>
           </div>
-          <div class="elTagName">
-            <el-tag style="color: white; background-color: #BC8F8F;" type="warning">王五</el-tag>
-          </div>
         </div>
       </el-aside>
       <el-main>
