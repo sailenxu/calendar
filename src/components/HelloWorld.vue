@@ -40,7 +40,7 @@
 import FullCalendar from '@fullcalendar/vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import axios from "axios";
+import {getTagList} from "@/api/demo-api";
 
 export default {
   components: {
@@ -79,11 +79,8 @@ export default {
     }
   },
   mounted() {
-    axios.get('https://localhost:8080/getGroupList').then(res => {
-      this.options = res.data.data;
-    });
-    axios.get('https://localhost:8080/getEventByGroup').then(res => {
-      this.calendarOptions.events = res.data.data.eventList;
+    getTagList().then(res => {
+      console.info(res);
     })
   }
 }
